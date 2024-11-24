@@ -43,13 +43,10 @@ const todosHTML = (): string[] =>
    })
 
 input?.addEventListener('keydown', (e: KeyboardEvent) => {
-   console.log(e)
    if (e.key === 'Enter') {
       const todoHTML = e.target as HTMLInputElement
       const todo: string = todoHTML.value
-      const todoId: string = String(Math.random() * 100)
-         .split('.')
-         ?.at(1)
+      const todoId: string = String(Math.random() * 100).split('.')?.[1] || ''
       const todoItem: Todo = { checked: false, text: todo, id: todoId }
       if (todo === '') return
       todos.push(todoItem)
@@ -68,22 +65,16 @@ list_container?.addEventListener('click', (e: MouseEvent) => {
 
    if (todoItem) {
       const todoId: string | null = todoItem.getAttribute('id')
-      console.log('Clicked todo item with ID:', todoId)
 
       // If checkbox was clicked
       if (target.matches('input[type="checkbox"]')) {
-         console.log('Checkbox clicked')
          const checkbox = target as HTMLInputElement
          const isChecked = checkbox.checked
-         console.log('Checkbox is checked:', isChecked)
 
          if (todoId) {
             const todo = todos.find((todo) => todo.id.toString() === todoId)
             if (todo) {
-               console.log(isChecked)
                todo.checked = isChecked
-               console.log(todo)
-
                renderHTML()
             }
          }
@@ -91,7 +82,6 @@ list_container?.addEventListener('click', (e: MouseEvent) => {
 
       // If delete button was clicked
       if (target.matches('button') || target.matches('i.fa-xmark')) {
-         console.log('Delete button clicked')
          todos = todos.filter((todo) => {
             if (typeof todo.id !== 'string' || typeof todoId !== 'string')
                return
